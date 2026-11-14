@@ -141,6 +141,8 @@ try{Object.assign(S,JSON.parse(localStorage.getItem('ke_save')||'{}'))}catch(e){
 let M={},mkt={t:0,ok:false,rates:{USD:1,EUR:.92,RUB:90},src:'CoinGecko'};
 try{const c=JSON.parse(localStorage.getItem('ke_mkt')||'null');if(c){M=c.M||{};mkt.t=c.t||0;Object.assign(mkt.rates,c.rates||{})}}catch(e){}
 S.tapLvl=Math.min(S.tapLvl||0,10);
+const BIZ_MAX=10; // максимум уровней у каждого бизнеса
+for(const k in S.biz)S.biz[k]=Math.min(S.biz[k],BIZ_MAX);
 let tab='tap',invTab='st',itTab='car',openId=null;
 {const h=location.hash.slice(1).split('-');if(['biz','inv','items','me'].includes(h[0]))tab=h[0];if(ITEMS[h[1]])itTab=h[1];if(h[1]==='cr')invTab='cr'} // прямые ссылки на вкладки: #biz, #items-yacht
 const $=id=>document.getElementById(id);
@@ -220,9 +222,9 @@ const V={
   ${S.tapLvl<TAP_MAX?`<button class="btn" data-a="tapup" data-cost="${tapCost()}">${fmt(tapCost())}</button>`:'<button class="btn off">Макс.</button>'}</div>
   <div class="card"><div class="stat"><span>Статус</span><b>${rank()}</b></div><div class="stat"><span>Всего тапов</span><b>${S.taps.toLocaleString('ru-RU')}</b></div></div>`},
  biz(){return BIZ.map((b,i)=>{const n=S.biz[b[0]]||0,c=bizCost(b,n);
-  return `<div class="card row"><div class="ico pic">${b[1]}${pic('biz',i)}</div><div class="grow"><div class="t" style="white-space:normal">${b[2]}${n?`<span class="tag">ур. ${n}</span>`:''}</div>
-  <div class="s">${n?'Доход '+fmt(bizInc(b,n))+'/ч · след. уровень +'+fmt(b[4]*.05)+'/ч':'Доход '+fmt(b[4])+'/ч'}</div></div>
-  <button class="btn" data-a="biz" data-i="${i}" data-cost="${c}">${fmt(c)}</button></div>`}).join('')},
+  return `<div class="card row"><div class="ico pic">${b[1]}${pic('biz',i)}</div><div class="grow"><div class="t" style="white-space:normal">${b[2]}${n?`<span class="tag">ур. ${n}/${BIZ_MAX}</span>`:''}</div>
+  <div class="s">${n?'Доход '+fmt(bizInc(b,n))+'/ч'+(n<BIZ_MAX?' · след. уровень +'+fmt(b[4]*.05)+'/ч':' · макс. уровень'):'Доход '+fmt(b[4])+'/ч'}</div></div>
+  ${n<BIZ_MAX?`<button class="btn" data-a="biz" data-i="${i}" data-cost="${c}">${fmt(c)}</button>`:'<button class="btn off">Макс.</button>'}</div>`}).join('')},
  inv(){const list=invTab==='st'?ST:CR,tot=investVal();let cost=0;for(const id in S.hold)cost+=S.hold[id].c;
   const pl=tot-cost,age=mkt.t?Math.round((Date.now()-mkt.t)/6e4):null;
   return `<div class="card"><div class="s">Портфель</div><div class="big">${fmt(tot)}</div>
@@ -279,7 +281,7 @@ function closeSheet(){openId=null;$('modal').classList.remove('on')}
 // ---------- ДЕЙСТВИЯ ----------
 const A={
  tapup(){if(S.tapLvl>=TAP_MAX)return 1;const c=tapCost();if(pay(c))S.tapLvl++},
- biz(d){const b=BIZ[d.i],n=S.biz[b[0]]||0,c=bizCost(b,n);if(pay(c)){S.biz[b[0]]=n+1;S.bizSpent+=c}},
+ biz(d){const b=BIZ[d.i],n=S.biz[b[0]]||0,c=bizCost(b,n);if(n>=BIZ_MAX)return 1;if(pay(c)){S.biz[b[0]]=n+1;S.bizSpent+=c}},
  invtab(d){invTab=d.v},ittab(d){itTab=d.v},
  asset(d){openId=d.id},
  close(){closeSheet()},
