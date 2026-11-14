@@ -140,6 +140,7 @@ let S=Object.assign({},DEF);
 try{Object.assign(S,JSON.parse(localStorage.getItem('ke_save')||'{}'))}catch(e){}
 let M={},mkt={t:0,ok:false,rates:{USD:1,EUR:.92,RUB:90},src:'CoinGecko'};
 try{const c=JSON.parse(localStorage.getItem('ke_mkt')||'null');if(c){M=c.M||{};mkt.t=c.t||0;Object.assign(mkt.rates,c.rates||{})}}catch(e){}
+S.tapLvl=Math.min(S.tapLvl||0,10);
 let tab='tap',invTab='st',itTab='car',openId=null;
 {const h=location.hash.slice(1).split('-');if(['biz','inv','items','me'].includes(h[0]))tab=h[0];if(ITEMS[h[1]])itTab=h[1];if(h[1]==='cr')invTab='cr'} // прямые ссылки на вкладки: #biz, #items-yacht
 const $=id=>document.getElementById(id);
@@ -165,7 +166,10 @@ const bizCost=(b,n)=>b[3]*Math.pow(1.18,n);
 const bizInc=(b,n)=>n?b[4]*(1+.05*(n-1)):0; // каждый уровень после первого: +5% базового дохода
 function incomeH(){let s=0;BIZ.forEach(b=>s+=bizInc(b,S.biz[b[0]]||0));
  ITEMS.home[2].forEach((it,i)=>{if(S.items['home'+i])s+=it[1]*.01});return s}
-const tapVal=()=>Math.round(Math.pow(1.6,S.tapLvl))+incomeH()*5e-5;
+const TAP_MAX=10; // всего 10 уровней прокачки тапа
+const tapGain=k=>(Math.round(Math.pow(1.6,k))-Math.round(Math.pow(1.6,k-1)))*(k<=5?.5:.25); // прибавка k-го уровня: -50% на уровнях 1–5, -75% на 6–10
+function tapBase(l){let v=1;for(let k=1;k<=l;k++)v+=tapGain(k);return v}
+const tapVal=()=>tapBase(S.tapLvl)+incomeH()*5e-5;
 const tapCost=()=>40*Math.pow(2.3,S.tapLvl);
 const price=id=>M[id]?M[id].p:0;
 function investVal(k){let s=0;for(const id in S.hold)if(ASSET[id]&&(!k||ASSET[id].k===k))s+=S.hold[id].q*price(id);return s}
@@ -212,8 +216,8 @@ function logo(id){const m=M[id],a=ASSET[id];return `<div class="ico"><span style
 const V={
  tap(){return `<div id="tapwrap"><button id="tap">KE</button>
   <div class="hint">Тапай, чтобы зарабатывать · <b style="color:var(--gold)">+${fmt(tapVal())}</b> за тап</div></div>
-  <div class="card row"><div class="ico">⚡</div><div class="grow"><div class="t">Сила тапа · ур. ${S.tapLvl+1}</div><div class="s">Следующий уровень: +${fmt(Math.round(Math.pow(1.6,S.tapLvl+1))-Math.round(Math.pow(1.6,S.tapLvl)))} за тап</div></div>
-  <button class="btn" data-a="tapup" data-cost="${tapCost()}">${fmt(tapCost())}</button></div>
+  <div class="card row"><div class="ico">⚡</div><div class="grow"><div class="t">Сила тапа · ур. ${S.tapLvl}/${TAP_MAX}</div><div class="s">${S.tapLvl<TAP_MAX?'Следующий уровень: +'+fmt(tapGain(S.tapLvl+1))+' за тап':'Максимальный уровень'}</div></div>
+  ${S.tapLvl<TAP_MAX?`<button class="btn" data-a="tapup" data-cost="${tapCost()}">${fmt(tapCost())}</button>`:'<button class="btn off">Макс.</button>'}</div>
   <div class="card"><div class="stat"><span>Статус</span><b>${rank()}</b></div><div class="stat"><span>Всего тапов</span><b>${S.taps.toLocaleString('ru-RU')}</b></div></div>`},
  biz(){return BIZ.map((b,i)=>{const n=S.biz[b[0]]||0,c=bizCost(b,n);
   return `<div class="card row"><div class="ico pic">${b[1]}${pic('biz',i)}</div><div class="grow"><div class="t" style="white-space:normal">${b[2]}${n?`<span class="tag">ур. ${n}</span>`:''}</div>
@@ -274,7 +278,7 @@ function closeSheet(){openId=null;$('modal').classList.remove('on')}
 
 // ---------- ДЕЙСТВИЯ ----------
 const A={
- tapup(){const c=tapCost();if(pay(c))S.tapLvl++},
+ tapup(){if(S.tapLvl>=TAP_MAX)return 1;const c=tapCost();if(pay(c))S.tapLvl++},
  biz(d){const b=BIZ[d.i],n=S.biz[b[0]]||0,c=bizCost(b,n);if(pay(c)){S.biz[b[0]]=n+1;S.bizSpent+=c}},
  invtab(d){invTab=d.v},ittab(d){itTab=d.v},
  asset(d){openId=d.id},
