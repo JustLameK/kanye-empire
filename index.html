@@ -28,7 +28,7 @@ nav button.on{color:var(--gold)}nav button.on i{filter:none;opacity:1}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
 .row{display:flex;align-items:center;gap:12px}
 .ico{width:44px;height:44px;border-radius:12px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:24px;flex:none;overflow:hidden;font-weight:700;color:var(--gold)}
-.ico img{width:100%;height:100%;object-fit:cover}
+.ico{position:relative}.ico img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--card2)}.ico.pic{width:76px;height:56px}
 .grow{flex:1;min-width:0}
 .t{font-weight:650;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .s{font-size:12px;color:var(--mut);margin-top:2px}
@@ -98,8 +98,8 @@ const BIZ=[
  ['oil','🛢️','Нефтяная компания',5e11,1e11],
  ['space','🚀','Космическая компания',5e12,8e11],
 ];
-const BIZ_K=.6; // множитель дохода всех бизнесов (баланс сложности)
-BIZ.forEach(b=>b[4]*=BIZ_K);
+BIZ.forEach(b=>b[4]=b[3]*.5); // базовый доход в час = 50% цены бизнеса
+const IMG={"biz":["0/00/Shawarma_2.jpg","f/fd/Caf%C3%A9_de_Flore.jpg","7/7c/2015_K%C5%82odzko%2C_ul._Dusznicka%2C_myjnia_samochodowa_02.jpg","e/e7/AugustRecordingSonJarochoWikiLearning020.jpg","5/59/Air_Jordan_1_Banned.jpg","6/62/Barbieri_-_ViaSophia25668.jpg","5/57/Data_Center_of_CNPC.jpg","e/ee/Vinilos_distintos_tama%C3%B1os.jpg","3/36/Livorno_-_Hotel_Palazzo_-_2025-09-29_20-09-38_001.jpg","6/64/Frankfurt_Airport_United_Airlines_Boeing_777-224ER_N77006_%28DSC02815%29.jpg","0/0b/West_Texas_Pumpjack.JPG","4/4a/SpaceX_Starship_ignition_during_IFT-5.jpg"],"car":["a/ac/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg","a/ab/Tesla_Model_3_%282023%29_Autofr%C3%BChling_Ulm_IMG_9282.jpg","9/9d/BMW_M5_%28G90%29_IMG_3266.jpg","3/38/Mercedes-Benz_W463_G_350_BlueTEC_01.jpg","1/12/2025_Porsche_992_Carrera_convertible_DSC_7026.jpg","3/33/Mercedes-Maybach_S_680_%28Z223%29_1X7A1856.jpg","f/f1/Lamborghini_Urus_SE_DSC_8524.jpg","1/1c/2019_Rolls-Royce_Phantom_V12_Automatic_6.75.jpg","1/13/Red_2019_Ferrari_SF90_Stradale_%2848264238897%29_%28cropped%29.jpg","1/13/Lamborghini_Revuelto_DSC_6985_%28cropped%29.jpg","9/9f/GIMS_2019%2C_Le_Grand-Saconnex_%28GIMS0833%29.jpg","1/18/Bugatti_Chiron_1.jpg"],"jet":["a/ae/Cessna_172S_Skyhawk_SP%2C_Private_JP6817606.jpg","2/2b/Cirrus_Vision_SF50_N124MW_cn_0009_%2828664083278%29.jpg","8/8f/Embraer_505_Phenom_300%2C_Aerojet_JP7625910.jpg","2/22/Bombardier_BD-100-1A10_Challenger_300_AN1704544.jpg","d/d6/G-ULFS_Gulfstream_G650_CVT_05-05-16_%2827046023031%29_%28cropped%29.jpg","c/cc/N182QS-Global7500-120823.png","3/37/N349BA%40FRA%3B09.07.2010_581ib_%284783401866%29.jpg","5/56/Airbus_ACJ320-251N_%28G-KELT%2C_cn_8403%29_%2810-20-2022%29.jpg","b/b1/D-ABYT_at_FRA.jpg"],"yacht":["0/01/Azimut_Yacht_Cannes_IMG_1300.jpg","2/29/Princess_NZ7_2379_%2849924599562%29.jpg","0/09/Sunseeker_130_Sport_Yacht_%287542161830%29.jpg","a/a8/Kingdom_5KR.jpg","9/94/14-08-06-barcelona-RalfR-037.jpg","9/9c/JOY_%2827793742605%29.jpg","d/d7/London_MMB_%C2%BB281_City_Canal_and_%22Kismet%22.jpg","6/69/Oceanco_Y_714_%2834278997396%29.jpg"],"home":["7/75/Moscow-City_04.jpg","e/e6/Dubai_Marina_Skyline.jpg","c/cd/Le_Meridien_Nirwana_Bali_Villa_private_pool_%283031084271%29.jpg","a/a5/Miami%2C_Florida%2C_Skyline_4.jpg","3/30/Artificial_Archipelagos%2C_Dubai%2C_United_Arab_Emirates_ISS022-E-024940_lrg_%28cropped%29.jpg","c/c4/Beverly_Wilshire_Hotel_%2815676919512%29.jpg","8/81/Central_Park_Tower_April_2021.jpg","0/09/Exumas_Island%2C_The_Bahamas_-_panoramio.jpg"]};
 const CR=[
  ['bitcoin','BTC','Bitcoin'],['ethereum','ETH','Ethereum'],['solana','SOL','Solana'],['binancecoin','BNB','BNB'],
  ['ripple','XRP','XRP'],['dogecoin','DOGE','Dogecoin'],['the-open-network','TON','Toncoin'],['cardano','ADA','Cardano'],
@@ -141,6 +141,7 @@ try{Object.assign(S,JSON.parse(localStorage.getItem('ke_save')||'{}'))}catch(e){
 let M={},mkt={t:0,ok:false,rates:{USD:1,EUR:.92,RUB:90},src:'CoinGecko'};
 try{const c=JSON.parse(localStorage.getItem('ke_mkt')||'null');if(c){M=c.M||{};mkt.t=c.t||0;Object.assign(mkt.rates,c.rates||{})}}catch(e){}
 let tab='tap',invTab='st',itTab='car',openId=null;
+{const h=location.hash.slice(1).split('-');if(['biz','inv','items','me'].includes(h[0]))tab=h[0];if(ITEMS[h[1]])itTab=h[1];if(h[1]==='cr')invTab='cr'} // прямые ссылки на вкладки: #biz, #items-yacht
 const $=id=>document.getElementById(id);
 function save(){S.last=Date.now();try{localStorage.setItem('ke_save',JSON.stringify(S))}catch(e){}}
 
@@ -149,18 +150,20 @@ const rate=()=>mkt.rates[S.cur]||1, sym=()=>CUR[S.cur];
 function wrap(s){return S.cur==='RUB'?s+' ₽':sym()+s}
 function fmt(v){v*=rate();const a=Math.abs(v);
  const U=[[1e18,' квнтлн'],[1e15,' квдрлн'],[1e12,' трлн'],[1e9,' млрд'],[1e6,' млн'],[1e4,' тыс']];
- for(const [n,l] of U)if(a>=n)return wrap((v/n).toFixed(2).replace(/\.?0+$/,'')+l);
+ for(const [n,l] of U)if(a>=n){const d=n<1e6?1e3:n;return wrap((v/d).toFixed(2).replace(/\.?0+$/,'')+l)}
  return wrap(a<100?v.toFixed(2):Math.round(v).toLocaleString('ru-RU'))}
 function fmtP(v){v*=rate();if(!isFinite(v)||v<=0)return '—';
  if(v>=1)return wrap(v.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2}));
  const d=Math.min(12,2-Math.floor(Math.log10(v))+1);return wrap(v.toFixed(d))}
 function fmtQ(q){return q>=1000?q.toLocaleString('ru-RU',{maximumFractionDigits:2}):q>=1?(+q.toFixed(4)).toString():(+q.toPrecision(4)).toString()}
+const pic=(g,i)=>IMG[g]&&IMG[g][i]?`<img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/${IMG[g][i]}/250px-${IMG[g][i].split('/')[2]}" alt="" onerror="this.remove()">`:'';
 const pct=c=>`<span class="${c>=0?'up':'down'}">${c>=0?'+':''}${c.toFixed(2)}%</span>`;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 // ---------- ЭКОНОМИКА ----------
 const bizCost=(b,n)=>b[3]*Math.pow(1.18,n);
-function incomeH(){let s=0;BIZ.forEach(b=>s+=(S.biz[b[0]]||0)*b[4]);
+const bizInc=(b,n)=>n?b[4]*(1+.05*(n-1)):0; // каждый уровень после первого: +5% базового дохода
+function incomeH(){let s=0;BIZ.forEach(b=>s+=bizInc(b,S.biz[b[0]]||0));
  ITEMS.home[2].forEach((it,i)=>{if(S.items['home'+i])s+=it[1]*.01});return s}
 const tapVal=()=>Math.round(Math.pow(1.6,S.tapLvl))+incomeH()*5e-5;
 const tapCost=()=>40*Math.pow(2.3,S.tapLvl);
@@ -204,7 +207,7 @@ function refreshBtns(){document.querySelectorAll('[data-cost]').forEach(b=>b.cla
 function spark(a,w,h){if(!a||a.length<2)return '';const mn=Math.min(...a),mx=Math.max(...a),r=mx-mn||1;
  const pts=a.map((v,i)=>(i/(a.length-1)*w).toFixed(1)+','+(h-2-(v-mn)/r*(h-4)).toFixed(1)).join(' ');
  return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${a[a.length-1]>=a[0]?'var(--up)':'var(--down)'}" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`}
-function logo(id){const m=M[id],a=ASSET[id];return `<div class="ico">${m&&m.img&&a.k==='cr'?`<img src="${esc(m.img)}" alt="" onerror="this.remove()">`:''}<span style="font-size:${a.sym.length>4?10:12}px;${m&&m.img&&a.k==='cr'?'display:none':''}">${esc(a.sym)}</span></div>`}
+function logo(id){const m=M[id],a=ASSET[id];return `<div class="ico"><span style="font-size:${a.sym.length>4?10:12}px">${esc(a.sym)}</span>${m&&m.img?`<img src="${esc(m.img)}" alt="" onerror="this.remove()">`:''}</div>`}
 
 const V={
  tap(){return `<div id="tapwrap"><button id="tap">KE</button>
@@ -213,8 +216,8 @@ const V={
   <button class="btn" data-a="tapup" data-cost="${tapCost()}">${fmt(tapCost())}</button></div>
   <div class="card"><div class="stat"><span>Статус</span><b>${rank()}</b></div><div class="stat"><span>Всего тапов</span><b>${S.taps.toLocaleString('ru-RU')}</b></div></div>`},
  biz(){return BIZ.map((b,i)=>{const n=S.biz[b[0]]||0,c=bizCost(b,n);
-  return `<div class="card row"><div class="ico">${b[1]}</div><div class="grow"><div class="t">${b[2]}${n?`<span class="tag">ур. ${n}</span>`:''}</div>
-  <div class="s">${n?'Доход '+fmt(n*b[4])+'/ч · ':''}+${fmt(b[4])}/ч за уровень</div></div>
+  return `<div class="card row"><div class="ico pic">${b[1]}${pic('biz',i)}</div><div class="grow"><div class="t" style="white-space:normal">${b[2]}${n?`<span class="tag">ур. ${n}</span>`:''}</div>
+  <div class="s">${n?'Доход '+fmt(bizInc(b,n))+'/ч · след. уровень +'+fmt(b[4]*.05)+'/ч':'Доход '+fmt(b[4])+'/ч'}</div></div>
   <button class="btn" data-a="biz" data-i="${i}" data-cost="${c}">${fmt(c)}</button></div>`}).join('')},
  inv(){const list=invTab==='st'?ST:CR,tot=investVal();let cost=0;for(const id in S.hold)cost+=S.hold[id].c;
   const pl=tot-cost,age=mkt.t?Math.round((Date.now()-mkt.t)/6e4):null;
@@ -229,7 +232,7 @@ const V={
  items(){const c=ITEMS[itTab];
   return `<div class="tabs">${Object.keys(ITEMS).map(k=>`<button data-a="ittab" data-v="${k}" class="${itTab===k?'on':''}">${ITEMS[k][0]}</button>`).join('')}</div>`+
    c[2].map((it,i)=>{const own=S.items[itTab+i];
-    return `<div class="card row"><div class="ico">${c[1]}</div><div class="grow"><div class="t" style="white-space:normal">${esc(it[0])}</div>
+    return `<div class="card row"><div class="ico pic">${c[1]}${pic(itTab,i)}</div><div class="grow"><div class="t" style="white-space:normal">${esc(it[0])}</div>
     <div class="s">${fmt(it[1])}${itTab==='home'?' · аренда +'+fmt(it[1]*.01)+'/ч':''}</div></div>
     ${own?`<button class="btn red" data-a="sell" data-i="${i}">Продать<br>${fmt(it[1]*.75)}</button>`:`<button class="btn" data-a="buy" data-i="${i}" data-cost="${it[1]}">Купить</button>`}</div>`}).join('')},
  me(){let owned=0,all=0;for(const c in ITEMS)ITEMS[c][2].forEach((_,i)=>{all++;if(S.items[c+i])owned++});
