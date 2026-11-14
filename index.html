@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0d0f14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Kanye Empire</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<style>
+:root{--bg:#0d0f14;--card:#171a22;--card2:#1f232e;--line:#2a2f3c;--tx:#f2f3f5;--mut:#8b91a1;--gold:#f5c451;--gold2:#e09b1f;--up:#2fd08a;--down:#ff5d6c}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overscroll-behavior:none;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+#app{max-width:520px;margin:0 auto;height:100%;display:flex;flex-direction:column}
+header{padding:calc(10px + env(safe-area-inset-top)) 16px 10px;border-bottom:1px solid var(--line)}
+.logo{font-size:11px;letter-spacing:3px;color:var(--gold);font-weight:800}
+.bal{font-size:30px;font-weight:800;margin-top:2px;font-variant-numeric:tabular-nums}
+.sub{display:flex;gap:14px;font-size:12px;color:var(--mut);margin-top:2px}
+.sub b{color:var(--up);font-weight:600}
+main{flex:1;overflow-y:auto;padding:12px 12px 20px;-webkit-overflow-scrolling:touch}
+nav{display:flex;border-top:1px solid var(--line);background:#11131a;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;border:0;color:var(--mut);padding:8px 0 9px;font-size:10.5px;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button i{font-style:normal;font-size:21px;filter:grayscale(1);opacity:.6}
+nav button.on{color:var(--gold)}nav button.on i{filter:none;opacity:1}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.row{display:flex;align-items:center;gap:12px}
+.ico{width:44px;height:44px;border-radius:12px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:24px;flex:none;overflow:hidden;font-weight:700;color:var(--gold)}
+.ico img{width:100%;height:100%;object-fit:cover}
+.grow{flex:1;min-width:0}
+.t{font-weight:650;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s{font-size:12px;color:var(--mut);margin-top:2px}
+.r{text-align:right;font-variant-numeric:tabular-nums}
+.up{color:var(--up)}.down{color:var(--down)}
+.btn{background:linear-gradient(180deg,var(--gold),var(--gold2));color:#1a1300;border:0;border-radius:10px;padding:9px 12px;font-weight:750;font-size:13px;min-width:86px;font-variant-numeric:tabular-nums}
+.btn.off{background:var(--card2);color:var(--mut)}
+.btn.sec{background:var(--card2);color:var(--tx);border:1px solid var(--line)}
+.btn.red{background:#3a1c22;color:var(--down)}
+.btn:active{transform:scale(.96)}
+.tabs{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto}
+.tabs button{flex:1;white-space:nowrap;background:var(--card);border:1px solid var(--line);color:var(--mut);border-radius:10px;padding:8px 10px;font-size:13px;font-weight:600}
+.tabs button.on{background:var(--gold);color:#1a1300;border-color:var(--gold)}
+#tapwrap{display:flex;flex-direction:column;align-items:center;padding-top:18px;position:relative}
+#tap{width:230px;height:230px;border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,#ffe9a8,var(--gold) 45%,#a86a08);box-shadow:0 0 0 10px #f5c45122,0 18px 50px #f5c45133;font-size:64px;font-weight:900;color:#3a2600;letter-spacing:-3px;transition:transform .06s}
+#tap.p{transform:scale(.94)}
+.fl{position:fixed;pointer-events:none;color:var(--gold);font-weight:800;font-size:20px;animation:fl .8s ease-out forwards;z-index:5}
+@keyframes fl{to{transform:translateY(-90px);opacity:0}}
+.hint{color:var(--mut);font-size:13px;margin:16px 0 14px}
+.stat{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.stat:last-child{border:0}.stat span{color:var(--mut)}
+#modal{position:fixed;inset:0;background:#000a;display:none;align-items:flex-end;justify-content:center;z-index:10}
+#modal.on{display:flex}
+#sheet{background:var(--card);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));max-height:92%;overflow-y:auto}
+input,select{background:var(--bg);border:1px solid var(--line);color:var(--tx);border-radius:10px;padding:10px;font-size:16px;width:100%;user-select:text;-webkit-user-select:text}
+.q{display:flex;gap:6px;margin:8px 0}.q button{flex:1;min-width:0}
+h3{margin:14px 0 8px;font-size:13px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.big{font-size:26px;font-weight:800}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#000d;border:1px solid var(--line);padding:9px 14px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20;white-space:nowrap}
+#toast.on{opacity:1}
+.note{font-size:12px;color:var(--mut);line-height:1.45}
+.tag{font-size:10px;padding:2px 6px;border-radius:6px;background:var(--card2);color:var(--mut);margin-left:6px;vertical-align:middle}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="logo">KANYE EMPIRE</div>
+    <div class="bal" id="bal">$0</div>
+    <div class="sub"><div>Доход: <b id="inc">$0/ч</b></div><div>Капитал: <span id="nw">$0</span></div></div>
+  </header>
+  <main id="main"></main>
+  <nav id="nav">
+    <button data-tab="tap"><i>👆</i>Заработок</button>
+    <button data-tab="biz"><i>🏢</i>Бизнес</button>
+    <button data-tab="inv"><i>📈</i>Биржа</button>
+    <button data-tab="items"><i>🏎️</i>Имущество</button>
+    <button data-tab="me"><i>👑</i>Профиль</button>
+  </nav>
+</div>
+<div id="modal"><div id="sheet"></div></div>
+<div id="toast"></div>
+<script>
+'use strict';
+// ---------- ДАННЫЕ ----------
+const BIZ=[
+ ['shawarma','🌯','Точка с шаурмой',150,600],
+ ['coffee','☕','Кофейня',2500,6000],
+ ['wash','🚿','Автомойка',2e4,36e3],
+ ['studio','🎙️','Студия звукозаписи',15e4,2e5],
+ ['fashion','👟','Бренд одежды и кроссовок',1e6,1e6],
+ ['rest','🍽️','Ресторан',8e6,6e6],
+ ['it','💻','IT-компания',6e7,36e6],
+ ['label','💿','Музыкальный лейбл',5e8,24e7],
+ ['hotel','🏨','Сеть отелей',5e9,18e8],
+ ['air','✈️','Авиакомпания',5e10,14e9],
+ ['oil','🛢️','Нефтяная компания',5e11,1e11],
+ ['space','🚀','Космическая компания',5e12,8e11],
+];
+const CR=[
+ ['bitcoin','BTC','Bitcoin'],['ethereum','ETH','Ethereum'],['solana','SOL','Solana'],['binancecoin','BNB','BNB'],
+ ['ripple','XRP','XRP'],['dogecoin','DOGE','Dogecoin'],['the-open-network','TON','Toncoin'],['cardano','ADA','Cardano'],
+ ['tron','TRX','TRON'],['avalanche-2','AVAX','Avalanche'],['chainlink','LINK','Chainlink'],['litecoin','LTC','Litecoin'],
+ ['polkadot','DOT','Polkadot'],['shiba-inu','SHIB','Shiba Inu'],['pepe','PEPE','Pepe'],['monero','XMR','Monero'],
+];
+const ST=[
+ ['apple-xstock','AAPL','Apple'],['microsoft-xstock','MSFT','Microsoft'],['nvidia-xstock','NVDA','NVIDIA'],
+ ['alphabet-xstock','GOOGL','Alphabet (Google)'],['amazon-xstock','AMZN','Amazon'],['meta-xstock','META','Meta'],
+ ['tesla-xstock','TSLA','Tesla'],['netflix-xstock','NFLX','Netflix'],['amd-xstock','AMD','AMD'],['intel-xstock','INTC','Intel'],
+ ['palantir-xstock','PLTR','Palantir'],['coinbase-xstock','COIN','Coinbase'],['microstrategy-xstock','MSTR','Strategy'],
+ ['mcdonald-s-xstock','MCD','McDonald\'s'],['coca-cola-xstock','KO','Coca-Cola'],['walmart-xstock','WMT','Walmart'],
+ ['jpmorgan-chase-xstock','JPM','JPMorgan Chase'],['visa-xstock','V','Visa'],['berkshire-hathaway-xstock','BRK.B','Berkshire Hathaway'],
+ ['sp500-xstock','SPY','S&P 500 (SPY)'],['nasdaq-xstock','QQQ','Nasdaq 100 (QQQ)'],['gold-xstock','GLD','Золото (GLD)'],
+];
+const ASSET={};CR.forEach(a=>ASSET[a[0]]={sym:a[1],name:a[2],k:'cr'});ST.forEach(a=>ASSET[a[0]]={sym:a[1],name:a[2],k:'st'});
+const ITEMS={
+ car:['Авто','🚗',[
+  ['Toyota Camry',3e4],['Tesla Model 3',42e3],['BMW M5',12e4],['Mercedes-AMG G 63',19e4],['Porsche 911 Turbo S',23e4],
+  ['Mercedes-Maybach S 680',235e3],['Lamborghini Urus',24e4],['Rolls-Royce Phantom',5e5],['Ferrari SF90 Stradale',525e3],
+  ['Lamborghini Revuelto',61e4],['Koenigsegg Jesko',3e6],['Bugatti Chiron',33e5]]],
+ jet:['Самолёты','🛩️',[
+  ['Cessna 172 Skyhawk',43e4],['Cirrus Vision Jet',35e5],['Embraer Phenom 300E',11e6],['Bombardier Challenger 350',27e6],
+  ['Gulfstream G650ER',7e7],['Bombardier Global 7500',78e6],['Boeing BBJ 737 MAX',1e8],['Airbus ACJ350',32e7],['Boeing 747-8 BBJ',42e7]]],
+ yacht:['Яхты','🛥️',[
+  ['Azimut 55',15e5],['Princess Y85',6e6],['Sunseeker 100 Yacht',12e6],['Benetti Oasis 40M',2e7],['Heesen 55m',45e6],
+  ['Feadship 70m',11e7],['Lürssen 95m',25e7],['Oceanco 110m',45e7]]],
+ home:['Недвижимость','🏠',[
+  ['Студия в Москве',12e4],['Апартаменты в Dubai Marina',45e4],['Вилла на Бали',9e5],['Пентхаус в Майами',6e6],
+  ['Вилла на Палм-Джумейра, Дубай',2e7],['Особняк в Беверли-Хиллз',35e6],['Пентхаус Central Park Tower, Нью-Йорк',9e7],['Частный остров на Багамах',15e7]]],
+};
+const RANKS=[[0,'Новичок'],[1e4,'Предприниматель'],[1e6,'Миллионер'],[1e8,'Мультимиллионер'],[1e9,'Миллиардер'],[1e11,'Олигарх'],[1e12,'Триллионер'],[1e14,'Император']];
+const CUR={USD:'$',EUR:'€',RUB:'₽'};
+
+// ---------- СОСТОЯНИЕ ----------
+const DEF={money:0,tapLvl:0,biz:{},bizSpent:0,items:{},hold:{},last:Date.now(),cur:'USD',fh:'',taps:0,earned:0};
+let S=Object.assign({},DEF);
+try{Object.assign(S,JSON.parse(localStorage.getItem('ke_save')||'{}'))}catch(e){}
+let M={},mkt={t:0,ok:false,rates:{USD:1,EUR:.92,RUB:90},src:'CoinGecko'};
+try{const c=JSON.parse(localStorage.getItem('ke_mkt')||'null');if(c){M=c.M||{};mkt.t=c.t||0;Object.assign(mkt.rates,c.rates||{})}}catch(e){}
+let tab='tap',invTab='st',itTab='car',openId=null;
+const $=id=>document.getElementById(id);
+function save(){S.last=Date.now();try{localStorage.setItem('ke_save',JSON.stringify(S))}catch(e){}}
+
+// ---------- ФОРМАТЫ ----------
+const rate=()=>mkt.rates[S.cur]||1, sym=()=>CUR[S.cur];
+function wrap(s){return S.cur==='RUB'?s+' ₽':sym()+s}
+function fmt(v){v*=rate();const a=Math.abs(v);
+ const U=[[1e18,' квнтлн'],[1e15,' квдрлн'],[1e12,' трлн'],[1e9,' млрд'],[1e6,' млн'],[1e4,' тыс']];
+ for(const [n,l] of U)if(a>=n)return wrap((v/n).toFixed(2).replace(/\.?0+$/,'')+l);
+ return wrap(a<100?v.toFixed(2):Math.round(v).toLocaleString('ru-RU'))}
+function fmtP(v){v*=rate();if(!isFinite(v)||v<=0)return '—';
+ if(v>=1)return wrap(v.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2}));
+ const d=Math.min(12,2-Math.floor(Math.log10(v))+1);return wrap(v.toFixed(d))}
+function fmtQ(q){return q>=1000?q.toLocaleString('ru-RU',{maximumFractionDigits:2}):q>=1?(+q.toFixed(4)).toString():(+q.toPrecision(4)).toString()}
+const pct=c=>`<span class="${c>=0?'up':'down'}">${c>=0?'+':''}${c.toFixed(2)}%</span>`;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// ---------- ЭКОНОМИКА ----------
+const bizCost=(b,n)=>b[3]*Math.pow(1.18,n);
+function incomeH(){let s=0;BIZ.forEach(b=>s+=(S.biz[b[0]]||0)*b[4]);
+ ITEMS.home[2].forEach((it,i)=>{if(S.items['home'+i])s+=it[1]*.01});return s}
+const tapVal=()=>Math.round(Math.pow(1.6,S.tapLvl))+incomeH()*5e-5;
+const tapCost=()=>40*Math.pow(2.3,S.tapLvl);
+const price=id=>M[id]?M[id].p:0;
+function investVal(k){let s=0;for(const id in S.hold)if(ASSET[id]&&(!k||ASSET[id].k===k))s+=S.hold[id].q*price(id);return s}
+function itemsVal(){let s=0;for(const c in ITEMS)ITEMS[c][2].forEach((it,i)=>{if(S.items[c+i])s+=it[1]});return s}
+const netWorth=()=>S.money+investVal()+itemsVal()+S.bizSpent;
+function rank(){const n=netWorth();let r=RANKS[0][1];RANKS.forEach(x=>{if(n>=x[0])r=x[1]});return r}
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),1800)}
+function pay(c){if(S.money+1e-9<c){toast('Недостаточно денег');return false}S.money-=c;return true}
+
+// ---------- РЫНОК ----------
+function thin(a){if(!a||!a.length)return [];const st=Math.max(1,Math.floor(a.length/42));return a.filter((_,i)=>i%st===0||i===a.length-1)}
+async function loadMarket(){
+ try{
+  const ids=Object.keys(ASSET).join(',');
+  const r=await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids='+encodeURIComponent(ids)+'&per_page=100&sparkline=true&price_change_percentage=24h');
+  if(!r.ok)throw 0;
+  const d=await r.json();if(!Array.isArray(d)||!d.length)throw 0;
+  d.forEach(c=>{if(ASSET[c.id]&&c.current_price>0)M[c.id]={p:c.current_price,ch:c.price_change_percentage_24h||0,sp:thin(c.sparkline_in_7d&&c.sparkline_in_7d.price),img:c.image}});
+  mkt.t=Date.now();mkt.ok=true;
+ }catch(e){mkt.ok=false}
+ if(S.fh)await loadFinnhub();
+ try{localStorage.setItem('ke_mkt',JSON.stringify({M,t:mkt.t,rates:mkt.rates}))}catch(e){}
+ render();
+}
+async function loadFinnhub(){ // необязательно: точные биржевые котировки акций
+ let ok=0;
+ await Promise.all(ST.map(async a=>{try{
+  const r=await fetch('https://finnhub.io/api/v1/quote?symbol='+encodeURIComponent(a[1])+'&token='+encodeURIComponent(S.fh));
+  const d=await r.json();if(d&&d.c>0){M[a[0]]=Object.assign(M[a[0]]||{sp:[]},{p:d.c,ch:d.dp||0});ok++}}catch(e){}}));
+ mkt.fh=ok>0;
+}
+async function loadRates(){try{
+ const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether&vs_currencies=usd,eur,rub');
+ const d=(await r.json()).tether;if(d&&d.usd>0){if(d.eur>0)mkt.rates.EUR=d.eur/d.usd;if(d.rub>0)mkt.rates.RUB=d.rub/d.usd}}catch(e){}}
+
+// ---------- ОТРИСОВКА ----------
+function header(){$('bal').textContent=fmt(S.money);$('inc').textContent=fmt(incomeH())+'/ч';$('nw').textContent=fmt(netWorth())}
+function refreshBtns(){document.querySelectorAll('[data-cost]').forEach(b=>b.classList.toggle('off',S.money<+b.dataset.cost))}
+function spark(a,w,h){if(!a||a.length<2)return '';const mn=Math.min(...a),mx=Math.max(...a),r=mx-mn||1;
+ const pts=a.map((v,i)=>(i/(a.length-1)*w).toFixed(1)+','+(h-2-(v-mn)/r*(h-4)).toFixed(1)).join(' ');
+ return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${a[a.length-1]>=a[0]?'var(--up)':'var(--down)'}" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`}
+function logo(id){const m=M[id],a=ASSET[id];return `<div class="ico">${m&&m.img&&a.k==='cr'?`<img src="${esc(m.img)}" alt="" onerror="this.remove()">`:''}<span style="font-size:${a.sym.length>4?10:12}px;${m&&m.img&&a.k==='cr'?'display:none':''}">${esc(a.sym)}</span></div>`}
+
+const V={
+ tap(){return `<div id="tapwrap"><button id="tap">KE</button>
+  <div class="hint">Тапай, чтобы зарабатывать · <b style="color:var(--gold)">+${fmt(tapVal())}</b> за тап</div></div>
+  <div class="card row"><div class="ico">⚡</div><div class="grow"><div class="t">Сила тапа · ур. ${S.tapLvl+1}</div><div class="s">Следующий уровень: +${fmt(Math.round(Math.pow(1.6,S.tapLvl+1))-Math.round(Math.pow(1.6,S.tapLvl)))} за тап</div></div>
+  <button class="btn" data-a="tapup" data-cost="${tapCost()}">${fmt(tapCost())}</button></div>
+  <div class="card"><div class="stat"><span>Статус</span><b>${rank()}</b></div><div class="stat"><span>Всего тапов</span><b>${S.taps.toLocaleString('ru-RU')}</b></div></div>`},
+ biz(){return BIZ.map((b,i)=>{const n=S.biz[b[0]]||0,c=bizCost(b,n);
+  return `<div class="card row"><div class="ico">${b[1]}</div><div class="grow"><div class="t">${b[2]}${n?`<span class="tag">ур. ${n}</span>`:''}</div>
+  <div class="s">${n?'Доход '+fmt(n*b[4])+'/ч · ':''}+${fmt(b[4])}/ч за уровень</div></div>
+  <button class="btn" data-a="biz" data-i="${i}" data-cost="${c}">${fmt(c)}</button></div>`}).join('')},
+ inv(){const list=invTab==='st'?ST:CR,tot=investVal();let cost=0;for(const id in S.hold)cost+=S.hold[id].c;
+  const pl=tot-cost,age=mkt.t?Math.round((Date.now()-mkt.t)/6e4):null;
+  return `<div class="card"><div class="s">Портфель</div><div class="big">${fmt(tot)}</div>
+   <div class="s">${cost>0?`Прибыль: <span class="${pl>=0?'up':'down'}">${pl>=0?'+':''}${fmt(pl)} (${(pl/cost*100).toFixed(2)}%)</span> · `:''}${mkt.t?(mkt.ok?'🟢 реальные цены':'🟠 нет связи, цены '+age+' мин назад'):'⏳ загрузка цен…'}</div></div>
+   <div class="tabs"><button data-a="invtab" data-v="st" class="${invTab==='st'?'on':''}">Акции</button><button data-a="invtab" data-v="cr" class="${invTab==='cr'?'on':''}">Криптовалюта</button></div>`+
+   list.map(a=>{const m=M[a[0]],h=S.hold[a[0]];
+    return `<div class="card row" data-a="asset" data-id="${a[0]}">${logo(a[0])}<div class="grow"><div class="t">${esc(a[2])}</div>
+    <div class="s">${a[1]}${h?' · у вас '+fmtQ(h.q)+' ('+fmt(h.q*price(a[0]))+')':''}</div></div>
+    <div style="width:60px">${m?spark(m.sp,60,28):''}</div>
+    <div class="r"><div class="t">${m?fmtP(m.p):'—'}</div><div class="s">${m?pct(m.ch):''}</div></div></div>`}).join('')},
+ items(){const c=ITEMS[itTab];
+  return `<div class="tabs">${Object.keys(ITEMS).map(k=>`<button data-a="ittab" data-v="${k}" class="${itTab===k?'on':''}">${ITEMS[k][0]}</button>`).join('')}</div>`+
+   c[2].map((it,i)=>{const own=S.items[itTab+i];
+    return `<div class="card row"><div class="ico">${c[1]}</div><div class="grow"><div class="t" style="white-space:normal">${esc(it[0])}</div>
+    <div class="s">${fmt(it[1])}${itTab==='home'?' · аренда +'+fmt(it[1]*.01)+'/ч':''}</div></div>
+    ${own?`<button class="btn red" data-a="sell" data-i="${i}">Продать<br>${fmt(it[1]*.75)}</button>`:`<button class="btn" data-a="buy" data-i="${i}" data-cost="${it[1]}">Купить</button>`}</div>`}).join('')},
+ me(){let owned=0,all=0;for(const c in ITEMS)ITEMS[c][2].forEach((_,i)=>{all++;if(S.items[c+i])owned++});
+  return `<div class="card"><div class="s">${rank()}</div><div class="big">${fmt(netWorth())}</div><div class="s">Общий капитал</div></div>
+  <div class="card"><div class="stat"><span>Наличные</span><b>${fmt(S.money)}</b></div><div class="stat"><span>Акции</span><b>${fmt(investVal('st'))}</b></div>
+  <div class="stat"><span>Криптовалюта</span><b>${fmt(investVal('cr'))}</b></div><div class="stat"><span>Бизнесы</span><b>${fmt(S.bizSpent)}</b></div>
+  <div class="stat"><span>Имущество (${owned}/${all})</span><b>${fmt(itemsVal())}</b></div><div class="stat"><span>Заработано всего</span><b>${fmt(S.earned)}</b></div></div>
+  <h3>Настройки</h3>
+  <div class="card"><div class="s" style="margin-bottom:6px">Валюта отображения (по реальному курсу)</div>
+   <div class="tabs" style="margin:0">${Object.keys(CUR).map(c=>`<button data-a="cur" data-v="${c}" class="${S.cur===c?'on':''}">${c} ${CUR[c]}</button>`).join('')}</div></div>
+  <div class="card"><div class="s" style="margin-bottom:6px">Ключ Finnhub (необязательно)</div>
+   <input id="fh" placeholder="API-ключ finnhub.io" value="${esc(S.fh)}" autocomplete="off">
+   <div class="q"><button class="btn sec" data-a="fhsave">Сохранить ключ</button></div>
+   <div class="note">Без ключа цены акций берутся из токенизированных акций (xStocks) через CoinGecko — они повторяют реальные котировки и торгуются 24/7. С бесплатным ключом Finnhub цены берутся напрямую с биржи США.${S.fh?(mkt.fh?' <b class="up">Finnhub подключён.</b>':' <b class="down">Finnhub не отвечает — проверьте ключ.</b>'):''}</div></div>
+  <div class="card"><button class="btn red" style="width:100%" data-a="reset">Начать игру заново</button></div>
+  <div class="note" style="text-align:center">Kanye Empire · игровые деньги, реальные котировки.<br>Данные: CoinGecko</div>`},
+};
+function render(){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+ const f=document.activeElement&&document.activeElement.id==='fh';
+ if(!(tab==='me'&&f))$('main').innerHTML=V[tab]();
+ header();refreshBtns();if(openId)sheetAsset()}
+
+// ---------- ОКНО АКТИВА ----------
+function sheetAsset(){const id=openId,a=ASSET[id],m=M[id],h=S.hold[id];
+ const keep=$('amt')?$('amt').value:'';
+ let pos='';if(h&&m){const v=h.q*m.p,pl=v-h.c;pos=`<div class="card" style="background:var(--card2)"><div class="stat"><span>У вас</span><b>${fmtQ(h.q)} ${a.sym}</b></div><div class="stat"><span>Стоимость</span><b>${fmt(v)}</b></div>
+  <div class="stat"><span>Прибыль</span><b class="${pl>=0?'up':'down'}">${pl>=0?'+':''}${fmt(pl)} (${(pl/h.c*100).toFixed(2)}%)</b></div></div>`}
+ $('sheet').innerHTML=`<div class="row">${logo(id)}<div class="grow"><div class="t">${esc(a.name)}</div><div class="s">${a.sym} · ${a.k==='st'?'акция':'криптовалюта'}</div></div><button class="btn sec" style="min-width:0" data-a="close">✕</button></div>
+  <div class="big" style="margin-top:12px">${m?fmtP(m.p):'—'} <span style="font-size:14px">${m?pct(m.ch):''} <span class="s">24ч</span></span></div>
+  <div style="margin:10px 0">${m?spark(m.sp,300,90):''}</div><div class="s" style="margin-bottom:10px">График за 7 дней</div>${pos}
+  ${m?`<h3>Купить на сумму (${sym()})</h3><input id="amt" inputmode="decimal" placeholder="0" value="${esc(keep)}">
+  <div class="q"><button class="btn sec" data-a="amt" data-v=".25">25%</button><button class="btn sec" data-a="amt" data-v=".5">50%</button><button class="btn sec" data-a="amt" data-v="1">Всё</button></div>
+  <button class="btn" style="width:100%;padding:13px" data-a="trade">Купить ${a.sym}</button>
+  ${h?`<h3>Продать</h3><div class="q" style="margin:0"><button class="btn red" data-a="sellp" data-v=".25">25%</button><button class="btn red" data-a="sellp" data-v=".5">50%</button><button class="btn red" data-a="sellp" data-v="1">Всё</button></div>`:''}`
+  :'<div class="note">Цена ещё не загружена. Проверьте подключение к интернету.</div>'}`;
+ $('modal').classList.add('on')}
+function sheetMsg(html){openId=null;$('sheet').innerHTML=html;$('modal').classList.add('on')}
+function closeSheet(){openId=null;$('modal').classList.remove('on')}
+
+// ---------- ДЕЙСТВИЯ ----------
+const A={
+ tapup(){const c=tapCost();if(pay(c))S.tapLvl++},
+ biz(d){const b=BIZ[d.i],n=S.biz[b[0]]||0,c=bizCost(b,n);if(pay(c)){S.biz[b[0]]=n+1;S.bizSpent+=c}},
+ invtab(d){invTab=d.v},ittab(d){itTab=d.v},
+ asset(d){openId=d.id},
+ close(){closeSheet()},
+ amt(d){$('amt').value=(Math.floor(S.money*rate()*d.v*100)/100)||'';return 1},
+ trade(){const m=M[openId];if(!m)return 1;const usd=parseFloat(String($('amt').value).replace(/\s/g,'').replace(',','.'))/rate();
+  if(!(usd>0)){toast('Введите сумму');return 1}
+  const u=Math.min(usd,S.money);if(usd>S.money+.01){toast('Недостаточно денег');return 1}
+  S.money-=u;const h=S.hold[openId]||(S.hold[openId]={q:0,c:0});h.q+=u/m.p;h.c+=u;$('amt').value='';toast('Куплено '+fmtQ(u/m.p)+' '+ASSET[openId].sym)},
+ sellp(d){const m=M[openId],h=S.hold[openId];if(!m||!h)return 1;const q=h.q*d.v,v=q*m.p;
+  h.c-=h.c*d.v;h.q-=q;S.money+=v;if(+d.v===1||h.q*m.p<.005)delete S.hold[openId];toast('Продано на '+fmt(v))},
+ buy(d){const it=ITEMS[itTab][2][d.i];if(pay(it[1])){S.items[itTab+d.i]=1;toast('Куплено: '+it[0])}},
+ sell(d){const it=ITEMS[itTab][2][d.i];delete S.items[itTab+d.i];S.money+=it[1]*.75;toast('Продано за '+fmt(it[1]*.75))},
+ cur(d){S.cur=d.v},
+ fhsave(){S.fh=$('fh').value.trim();$('fh').blur();mkt.fh=false;toast(S.fh?'Ключ сохранён':'Ключ удалён');loadMarket()},
+ reset(){sheetMsg(`<div class="t">Начать заново?</div><div class="note" style="margin:8px 0 14px">Весь прогресс будет удалён без возможности восстановления.</div>
+  <div class="q"><button class="btn sec" data-a="close">Отмена</button><button class="btn red" data-a="reset2">Удалить всё</button></div>`);return 1},
+ reset2(){const keep={cur:S.cur,fh:S.fh};S=Object.assign({},DEF,{biz:{},items:{},hold:{},last:Date.now()},keep);closeSheet()},
+};
+document.addEventListener('click',e=>{
+ const n=e.target.closest('nav [data-tab]');if(n){tab=n.dataset.tab;render();$('main').scrollTop=0;return}
+ if(e.target.id==='modal'){closeSheet();return}
+ const b=e.target.closest('[data-a]');if(!b||!A[b.dataset.a])return;
+ if(!A[b.dataset.a](b.dataset)){save();render()}
+});
+document.addEventListener('pointerdown',e=>{const t=e.target.closest('#tap');if(!t)return;
+ const v=tapVal();S.money+=v;S.earned+=v;S.taps++;header();refreshBtns();
+ t.classList.add('p');setTimeout(()=>t.classList.remove('p'),70);
+ const f=document.createElement('div');f.className='fl';f.textContent='+'+fmt(v);f.style.left=(e.clientX-20)+'px';f.style.top=(e.clientY-30)+'px';
+ document.body.appendChild(f);setTimeout(()=>f.remove(),800);if(navigator.vibrate)navigator.vibrate(8)});
+
+// ---------- ЦИКЛ ----------
+let lastT=Date.now();
+function tick(){const now=Date.now(),dt=Math.min((now-lastT)/1000,3600*12);lastT=now;
+ const g=incomeH()/3600*dt;if(g>0){S.money+=g;S.earned+=g}header();refreshBtns()}
+(function start(){
+ const away=Math.min((Date.now()-(S.last||Date.now()))/1000,3600*12),g=incomeH()/3600*away;
+ render();
+ if(g>0&&away>60){S.money+=g;S.earned+=g;header();
+  sheetMsg(`<div class="s">С возвращением!</div><div class="big" style="margin:6px 0">+${fmt(g)}</div><div class="note" style="margin-bottom:14px">Ваши бизнесы заработали это, пока вас не было (${away>=3600?(away/3600).toFixed(1)+' ч':Math.round(away/60)+' мин'}; максимум 12 ч).</div><button class="btn" style="width:100%;padding:13px" data-a="close">Забрать</button>`)}
+ lastT=Date.now();
+ setInterval(tick,250);setInterval(save,5000);
+ loadRates().then(loadMarket);
+ setInterval(()=>{if(!document.hidden)loadMarket()},60000);setInterval(loadRates,15*60000);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)save();else{tick();if(Date.now()-mkt.t>60000)loadMarket()}});
+ window.addEventListener('pagehide',save);
+ if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+})();
+</script>
+</body>
+</html>
