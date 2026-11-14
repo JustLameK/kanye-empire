@@ -57,6 +57,7 @@ input,select{background:var(--bg);border:1px solid var(--line);color:var(--tx);b
 .q{display:flex;gap:6px;margin:8px 0}.q button{flex:1;min-width:0}
 h3{margin:14px 0 8px;font-size:13px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:1px}
 .big{font-size:26px;font-weight:800}
+.cres{font-size:40px;font-weight:800;text-align:center;border-radius:14px;padding:16px;margin-bottom:10px;background:var(--card2);font-variant-numeric:tabular-nums}
 #toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#000d;border:1px solid var(--line);padding:9px 14px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20;white-space:nowrap}
 #toast.on{opacity:1}
 .note{font-size:12px;color:var(--mut);line-height:1.45}
@@ -76,6 +77,7 @@ h3{margin:14px 0 8px;font-size:13px;color:var(--mut);font-weight:600;text-transf
     <button data-tab="biz"><i>🏢</i>Бизнес</button>
     <button data-tab="inv"><i>📈</i>Биржа</button>
     <button data-tab="items"><i>🏎️</i>Имущество</button>
+    <button data-tab="cas"><i>🎰</i>Казино</button>
     <button data-tab="me"><i>👑</i>Профиль</button>
   </nav>
 </div>
@@ -99,7 +101,7 @@ const BIZ=[
  ['space','🚀','Космическая компания',5e12,8e11],
 ];
 BIZ.forEach(b=>b[4]=b[3]*.5); // базовый доход в час = 50% цены бизнеса
-const IMG={"biz":["0/00/Shawarma_2.jpg","f/fd/Caf%C3%A9_de_Flore.jpg","7/7c/2015_K%C5%82odzko%2C_ul._Dusznicka%2C_myjnia_samochodowa_02.jpg","e/e7/AugustRecordingSonJarochoWikiLearning020.jpg","5/59/Air_Jordan_1_Banned.jpg","6/62/Barbieri_-_ViaSophia25668.jpg","5/57/Data_Center_of_CNPC.jpg","e/ee/Vinilos_distintos_tama%C3%B1os.jpg","3/36/Livorno_-_Hotel_Palazzo_-_2025-09-29_20-09-38_001.jpg","6/64/Frankfurt_Airport_United_Airlines_Boeing_777-224ER_N77006_%28DSC02815%29.jpg","0/0b/West_Texas_Pumpjack.JPG","4/4a/SpaceX_Starship_ignition_during_IFT-5.jpg"],"car":["a/ac/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg","a/ab/Tesla_Model_3_%282023%29_Autofr%C3%BChling_Ulm_IMG_9282.jpg","9/9d/BMW_M5_%28G90%29_IMG_3266.jpg","3/38/Mercedes-Benz_W463_G_350_BlueTEC_01.jpg","1/12/2025_Porsche_992_Carrera_convertible_DSC_7026.jpg","3/33/Mercedes-Maybach_S_680_%28Z223%29_1X7A1856.jpg","f/f1/Lamborghini_Urus_SE_DSC_8524.jpg","1/1c/2019_Rolls-Royce_Phantom_V12_Automatic_6.75.jpg","1/13/Red_2019_Ferrari_SF90_Stradale_%2848264238897%29_%28cropped%29.jpg","1/13/Lamborghini_Revuelto_DSC_6985_%28cropped%29.jpg","9/9f/GIMS_2019%2C_Le_Grand-Saconnex_%28GIMS0833%29.jpg","1/18/Bugatti_Chiron_1.jpg"],"jet":["a/ae/Cessna_172S_Skyhawk_SP%2C_Private_JP6817606.jpg","2/2b/Cirrus_Vision_SF50_N124MW_cn_0009_%2828664083278%29.jpg","8/8f/Embraer_505_Phenom_300%2C_Aerojet_JP7625910.jpg","2/22/Bombardier_BD-100-1A10_Challenger_300_AN1704544.jpg","d/d6/G-ULFS_Gulfstream_G650_CVT_05-05-16_%2827046023031%29_%28cropped%29.jpg","c/cc/N182QS-Global7500-120823.png","3/37/N349BA%40FRA%3B09.07.2010_581ib_%284783401866%29.jpg","5/56/Airbus_ACJ320-251N_%28G-KELT%2C_cn_8403%29_%2810-20-2022%29.jpg","b/b1/D-ABYT_at_FRA.jpg"],"yacht":["0/01/Azimut_Yacht_Cannes_IMG_1300.jpg","2/29/Princess_NZ7_2379_%2849924599562%29.jpg","0/09/Sunseeker_130_Sport_Yacht_%287542161830%29.jpg","a/a8/Kingdom_5KR.jpg","9/94/14-08-06-barcelona-RalfR-037.jpg","9/9c/JOY_%2827793742605%29.jpg","d/d7/London_MMB_%C2%BB281_City_Canal_and_%22Kismet%22.jpg","6/69/Oceanco_Y_714_%2834278997396%29.jpg"],"home":["7/75/Moscow-City_04.jpg","e/e6/Dubai_Marina_Skyline.jpg","c/cd/Le_Meridien_Nirwana_Bali_Villa_private_pool_%283031084271%29.jpg","a/a5/Miami%2C_Florida%2C_Skyline_4.jpg","3/30/Artificial_Archipelagos%2C_Dubai%2C_United_Arab_Emirates_ISS022-E-024940_lrg_%28cropped%29.jpg","c/c4/Beverly_Wilshire_Hotel_%2815676919512%29.jpg","8/81/Central_Park_Tower_April_2021.jpg","0/09/Exumas_Island%2C_The_Bahamas_-_panoramio.jpg"]};
+const IMG={"biz":["0/00/Shawarma_2.jpg","f/fd/Caf%C3%A9_de_Flore.jpg","7/7c/2015_K%C5%82odzko%2C_ul._Dusznicka%2C_myjnia_samochodowa_02.jpg","e/e7/AugustRecordingSonJarochoWikiLearning020.jpg","5/59/Air_Jordan_1_Banned.jpg","6/62/Barbieri_-_ViaSophia25668.jpg","5/57/Data_Center_of_CNPC.jpg","e/ee/Vinilos_distintos_tama%C3%B1os.jpg","3/36/Livorno_-_Hotel_Palazzo_-_2025-09-29_20-09-38_001.jpg","6/64/Frankfurt_Airport_United_Airlines_Boeing_777-224ER_N77006_%28DSC02815%29.jpg","0/0b/West_Texas_Pumpjack.JPG","4/4a/SpaceX_Starship_ignition_during_IFT-5.jpg"],"car":["a/ac/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg","a/ab/Tesla_Model_3_%282023%29_Autofr%C3%BChling_Ulm_IMG_9282.jpg","9/9d/BMW_M5_%28G90%29_IMG_3266.jpg","3/38/Mercedes-Benz_W463_G_350_BlueTEC_01.jpg","1/12/2025_Porsche_992_Carrera_convertible_DSC_7026.jpg","3/33/Mercedes-Maybach_S_680_%28Z223%29_1X7A1856.jpg","f/f1/Lamborghini_Urus_SE_DSC_8524.jpg","1/1c/2019_Rolls-Royce_Phantom_V12_Automatic_6.75.jpg","1/13/Red_2019_Ferrari_SF90_Stradale_%2848264238897%29_%28cropped%29.jpg","1/13/Lamborghini_Revuelto_DSC_6985_%28cropped%29.jpg","9/9f/GIMS_2019%2C_Le_Grand-Saconnex_%28GIMS0833%29.jpg","1/18/Bugatti_Chiron_1.jpg","8/8d/2004_Chevrolet_Corvette_coupe%2C_front_right%2C_07-21-2024.jpg","9/95/2015_Chevrolet_Corvette_Z06_in_Velocity_Yellow%2C_Front_Right%2C_08-06-2022.jpg","4/4b/Chevrolet_Corvette_C8_IAA_2021_1X7A0156.jpg"],"jet":["a/ae/Cessna_172S_Skyhawk_SP%2C_Private_JP6817606.jpg","2/2b/Cirrus_Vision_SF50_N124MW_cn_0009_%2828664083278%29.jpg","8/8f/Embraer_505_Phenom_300%2C_Aerojet_JP7625910.jpg","2/22/Bombardier_BD-100-1A10_Challenger_300_AN1704544.jpg","d/d6/G-ULFS_Gulfstream_G650_CVT_05-05-16_%2827046023031%29_%28cropped%29.jpg","c/cc/N182QS-Global7500-120823.png","3/37/N349BA%40FRA%3B09.07.2010_581ib_%284783401866%29.jpg","5/56/Airbus_ACJ320-251N_%28G-KELT%2C_cn_8403%29_%2810-20-2022%29.jpg","b/b1/D-ABYT_at_FRA.jpg"],"yacht":["0/01/Azimut_Yacht_Cannes_IMG_1300.jpg","2/29/Princess_NZ7_2379_%2849924599562%29.jpg","0/09/Sunseeker_130_Sport_Yacht_%287542161830%29.jpg","a/a8/Kingdom_5KR.jpg","9/94/14-08-06-barcelona-RalfR-037.jpg","9/9c/JOY_%2827793742605%29.jpg","d/d7/London_MMB_%C2%BB281_City_Canal_and_%22Kismet%22.jpg","6/69/Oceanco_Y_714_%2834278997396%29.jpg"],"home":["7/75/Moscow-City_04.jpg","e/e6/Dubai_Marina_Skyline.jpg","c/cd/Le_Meridien_Nirwana_Bali_Villa_private_pool_%283031084271%29.jpg","a/a5/Miami%2C_Florida%2C_Skyline_4.jpg","3/30/Artificial_Archipelagos%2C_Dubai%2C_United_Arab_Emirates_ISS022-E-024940_lrg_%28cropped%29.jpg","c/c4/Beverly_Wilshire_Hotel_%2815676919512%29.jpg","8/81/Central_Park_Tower_April_2021.jpg","0/09/Exumas_Island%2C_The_Bahamas_-_panoramio.jpg"]};
 const CR=[
  ['bitcoin','BTC','Bitcoin'],['ethereum','ETH','Ethereum'],['solana','SOL','Solana'],['binancecoin','BNB','BNB'],
  ['ripple','XRP','XRP'],['dogecoin','DOGE','Dogecoin'],['the-open-network','TON','Toncoin'],['cardano','ADA','Cardano'],
@@ -120,7 +122,8 @@ const ITEMS={
  car:['Авто','🚗',[
   ['Toyota Camry',3e4],['Tesla Model 3',42e3],['BMW M5',12e4],['Mercedes-AMG G 63',19e4],['Porsche 911 Turbo S',23e4],
   ['Mercedes-Maybach S 680',235e3],['Lamborghini Urus',24e4],['Rolls-Royce Phantom',5e5],['Ferrari SF90 Stradale',525e3],
-  ['Lamborghini Revuelto',61e4],['Koenigsegg Jesko',3e6],['Bugatti Chiron',33e5]]],
+  ['Lamborghini Revuelto',61e4],['Koenigsegg Jesko',3e6],['Bugatti Chiron',33e5],
+  ['Chevrolet Corvette C5',2e4],['Chevrolet Corvette C7 Stingray',6e4],['Chevrolet Corvette C8 Stingray',7e4]]],
  jet:['Самолёты','🛩️',[
   ['Cessna 172 Skyhawk',43e4],['Cirrus Vision Jet',35e5],['Embraer Phenom 300E',11e6],['Bombardier Challenger 350',27e6],
   ['Gulfstream G650ER',7e7],['Bombardier Global 7500',78e6],['Boeing BBJ 737 MAX',1e8],['Airbus ACJ350',32e7],['Boeing 747-8 BBJ',42e7]]],
@@ -144,7 +147,7 @@ S.tapLvl=Math.min(S.tapLvl||0,10);
 const BIZ_MAX=10; // максимум уровней у каждого бизнеса
 for(const k in S.biz)S.biz[k]=Math.min(S.biz[k],BIZ_MAX);
 let tab='tap',invTab='st',itTab='car',openId=null;
-{const h=location.hash.slice(1).split('-');if(['biz','inv','items','me'].includes(h[0]))tab=h[0];if(ITEMS[h[1]])itTab=h[1];if(h[1]==='cr')invTab='cr'} // прямые ссылки на вкладки: #biz, #items-yacht
+{const h=location.hash.slice(1).split('-');if(['biz','inv','items','cas','me'].includes(h[0]))tab=h[0];if(ITEMS[h[1]])itTab=h[1];if(h[1]==='cr')invTab='cr';var hashGame=h[1]} // прямые ссылки на вкладки: #biz, #items-yacht
 const $=id=>document.getElementById(id);
 function save(){S.last=Date.now();try{localStorage.setItem('ke_save',JSON.stringify(S))}catch(e){}}
 
@@ -237,7 +240,7 @@ const V={
     <div class="r"><div class="t">${m?fmtP(m.p):'—'}</div><div class="s">${m?pct(m.ch):''}</div></div></div>`}).join('')},
  items(){const c=ITEMS[itTab];
   return `<div class="tabs">${Object.keys(ITEMS).map(k=>`<button data-a="ittab" data-v="${k}" class="${itTab===k?'on':''}">${ITEMS[k][0]}</button>`).join('')}</div>`+
-   c[2].map((it,i)=>{const own=S.items[itTab+i];
+   c[2].map((it,i)=>[it,i]).sort((a,b)=>a[0][1]-b[0][1]).map(([it,i])=>{const own=S.items[itTab+i]; // показываем по возрастанию цены, id остаётся прежним
     return `<div class="card row"><div class="ico pic">${c[1]}${pic(itTab,i)}</div><div class="grow"><div class="t" style="white-space:normal">${esc(it[0])}</div>
     <div class="s">${fmt(it[1])}${itTab==='home'?' · аренда +'+fmt(it[1]*.01)+'/ч':''}</div></div>
     ${own?`<button class="btn red" data-a="sell" data-i="${i}">Продать<br>${fmt(it[1]*.75)}</button>`:`<button class="btn" data-a="buy" data-i="${i}" data-cost="${it[1]}">Купить</button>`}</div>`}).join('')},
@@ -256,9 +259,46 @@ const V={
   <div class="card"><button class="btn red" style="width:100%" data-a="reset">Начать игру заново</button></div>
   <div class="note" style="text-align:center">Kanye Empire · игровые деньги, реальные котировки.<br>Данные: CoinGecko</div>`},
 };
+// ---------- КАЗИНО (только игровые деньги) ----------
+let casGame=['slot','coin'].includes(hashGame)?hashGame:'roul',casBetS='',casNumS='7',casBusy=false,casMsg='',casShow={roul:'—',slot:['🍒','💎','7️⃣'],coin:'🪙'};
+const CAS_MAX=.1; // максимальная ставка — доля наличных
+const RED=[1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+const SLOT=[['🍒',5,5],['🍋',5,8],['🔔',4,15],['⭐',3,30],['💎',2,40],['7️⃣',1,50]]; // символ, вес (из 20), выплата за три
+const rnd=n=>{const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%n};
+function slotSym(){let r=rnd(20);for(const x of SLOT){if(r<x[1])return x;r-=x[1]}return SLOT[0]}
+function casBet(){const b=parseFloat(String(casBetS).replace(/\s/g,'').replace(',','.'))/rate();
+ if(!(b>0)){toast('Введите ставку');return 0}
+ if(b>S.money+1e-9){toast('Недостаточно денег');return 0}
+ if(b>S.money*CAS_MAX+.006/rate()){toast('Максимальная ставка — 10% наличных');return 0}
+ return Math.min(b,S.money)}
+function casPlay(frame,ms,finish){if(casBusy)return;const b=casBet();if(!b)return;
+ casBusy=true;S.money-=b;casMsg='';header();const m=$('cmsg');if(m)m.textContent='…';
+ const t=setInterval(frame,70);
+ setTimeout(()=>{clearInterval(t);casBusy=false;const mult=finish(),win=b*mult;S.money+=win;S.cas=(S.cas||0)+win-b;
+  casMsg=mult>1?`<span class="up">Выигрыш +${fmt(win-b)}</span>`:mult===1?'Ставка возвращена':`<span class="down">Проигрыш −${fmt(b)}</span>`;save();render()},ms)}
+V.cas=function(){const mx=S.money*CAS_MAX,net=S.cas||0;let g='';
+ if(casGame==='roul'){const n=casShow.roul,col=n==='—'?'var(--card2)':n===0?'#1c8c4e':RED.includes(n)?'#c0392b':'#000';
+  g=`<div class="cres" id="rres" style="background:${col}">${n}</div>
+  <div class="q"><button class="btn red" data-a="roul" data-v="red">Красное ×2</button><button class="btn sec" data-a="roul" data-v="black">Чёрное ×2</button></div>
+  <div class="q"><button class="btn sec" data-a="roul" data-v="even">Чёт ×2</button><button class="btn sec" data-a="roul" data-v="odd">Нечёт ×2</button></div>
+  <div class="q"><button class="btn sec" data-a="roul" data-v="d1">1–12 ×3</button><button class="btn sec" data-a="roul" data-v="d2">13–24 ×3</button><button class="btn sec" data-a="roul" data-v="d3">25–36 ×3</button></div>
+  <div class="q"><input id="rnum" inputmode="numeric" value="${esc(casNumS)}" style="flex:1;min-width:0;text-align:center"><button class="btn" style="flex:2" data-a="roul" data-v="num">На число ×36</button></div>
+  <div class="note">Европейская рулетка: числа 0–36, на зеро проигрывают все ставки, кроме ставки на число 0.</div>`}
+ else if(casGame==='slot'){g=`<div class="cres">${casShow.slot.map((x,i)=>`<span id="sl${i}" style="display:inline-block;width:30%">${x}</span>`).join('')}</div>
+  <button class="btn" style="width:100%;padding:13px" data-a="slot">Крутить</button>
+  <div class="note" style="margin-top:10px">Три одинаковых: ${SLOT.map(x=>x[0]+' ×'+x[2]).join(' · ')}<br>Два одинаковых — ставка возвращается.</div>`}
+ else g=`<div class="cres" id="cres">${casShow.coin}</div>
+  <div class="q"><button class="btn sec" data-a="coin" data-v="h">Орёл ×1.95</button><button class="btn sec" data-a="coin" data-v="t">Решка ×1.95</button></div>`;
+ return `<div class="tabs">${[['roul','Рулетка'],['slot','Слоты'],['coin','Монетка']].map(x=>`<button data-a="cgame" data-v="${x[0]}" class="${casGame===x[0]?'on':''}">${x[1]}</button>`).join('')}</div>
+ <div class="card"><div class="s" style="margin-bottom:6px">Ставка (${sym()}) · максимум ${fmt(mx)} — 10% наличных</div>
+  <input id="cbet" inputmode="decimal" placeholder="0" value="${esc(casBetS)}">
+  <div class="q" style="margin-bottom:0"><button class="btn sec" data-a="cbet" data-v=".01">1%</button><button class="btn sec" data-a="cbet" data-v=".05">5%</button><button class="btn sec" data-a="cbet" data-v=".1">Макс.</button></div></div>
+ <div class="card">${g}<div id="cmsg" style="text-align:center;min-height:22px;margin-top:10px;font-weight:700">${casMsg}</div></div>
+ <div class="note" style="text-align:center">Только игровые деньги — без пополнения и вывода.<br>Итог в казино: <span class="${net>=0?'up':'down'}">${net>=0?'+':'−'}${fmt(Math.abs(net))}</span></div>`};
+document.addEventListener('input',e=>{if(e.target.id==='cbet')casBetS=e.target.value;if(e.target.id==='rnum')casNumS=e.target.value});
 function render(){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
- const f=document.activeElement&&document.activeElement.id==='fh';
- if(!(tab==='me'&&f))$('main').innerHTML=V[tab]();
+ const f=document.activeElement&&['fh','cbet','rnum'].includes(document.activeElement.id); // не перерисовываем, пока идёт ввод
+ if(!f)$('main').innerHTML=V[tab]();
  header();refreshBtns();if(openId)sheetAsset()}
 
 // ---------- ОКНО АКТИВА ----------
@@ -295,6 +335,15 @@ const A={
  buy(d){const it=ITEMS[itTab][2][d.i];if(pay(it[1])){S.items[itTab+d.i]=1;toast('Куплено: '+it[0])}},
  sell(d){const it=ITEMS[itTab][2][d.i];delete S.items[itTab+d.i];S.money+=it[1]*.75;toast('Продано за '+fmt(it[1]*.75))},
  cur(d){S.cur=d.v},
+ cgame(d){if(casBusy)return 1;casGame=d.v;casMsg=''},
+ cbet(d){casBetS=String(Math.floor(S.money*rate()*d.v*100)/100||'')},
+ roul(d){let num=null;if(d.v==='num'){num=parseInt(casNumS,10);if(!(num>=0&&num<=36)){toast('Число от 0 до 36');return 1}}
+  casPlay(()=>{const e=$('rres');if(e)e.textContent=rnd(37)},900,()=>{const n=rnd(37),red=RED.includes(n);casShow.roul=n;
+   const w={red:n>0&&red,black:n>0&&!red,even:n>0&&n%2===0,odd:n%2===1,d1:n>=1&&n<=12,d2:n>=13&&n<=24,d3:n>=25,num:n===num}[d.v];
+   return w?({d1:3,d2:3,d3:3,num:36}[d.v]||2):0});return 1},
+ slot(){casPlay(()=>{for(let i=0;i<3;i++){const e=$('sl'+i);if(e)e.textContent=SLOT[rnd(6)][0]}},1000,()=>{const r=[slotSym(),slotSym(),slotSym()];casShow.slot=r.map(x=>x[0]);
+   if(r[0]===r[1]&&r[1]===r[2])return r[0][2];return r[0]===r[1]||r[1]===r[2]||r[0]===r[2]?1:0});return 1},
+ coin(d){casPlay(()=>{const e=$('cres');if(e)e.textContent=rnd(2)?'Орёл':'Решка'},700,()=>{const h=rnd(2);casShow.coin=h?'Орёл':'Решка';return (h?'h':'t')===d.v?1.95:0});return 1},
  fhsave(){S.fh=$('fh').value.trim();$('fh').blur();mkt.fh=false;toast(S.fh?'Ключ сохранён':'Ключ удалён');loadMarket()},
  reset(){sheetMsg(`<div class="t">Начать заново?</div><div class="note" style="margin:8px 0 14px">Весь прогресс будет удалён без возможности восстановления.</div>
   <div class="q"><button class="btn sec" data-a="close">Отмена</button><button class="btn red" data-a="reset2">Удалить всё</button></div>`);return 1},
