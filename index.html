@@ -98,6 +98,8 @@ const BIZ=[
  ['oil','🛢️','Нефтяная компания',5e11,1e11],
  ['space','🚀','Космическая компания',5e12,8e11],
 ];
+const BIZ_K=.6; // множитель дохода всех бизнесов (баланс сложности)
+BIZ.forEach(b=>b[4]*=BIZ_K);
 const CR=[
  ['bitcoin','BTC','Bitcoin'],['ethereum','ETH','Ethereum'],['solana','SOL','Solana'],['binancecoin','BNB','BNB'],
  ['ripple','XRP','XRP'],['dogecoin','DOGE','Dogecoin'],['the-open-network','TON','Toncoin'],['cardano','ADA','Cardano'],
